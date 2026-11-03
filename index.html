@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
 <meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
 <meta name="theme-color" content="#03100b" />
 <title>para você</title>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%8C%BF%3C/text%3E%3C/svg%3E" />
@@ -26,9 +26,14 @@
 *,*::before,*::after{box-sizing:border-box}
 
 html,body{min-height:100%}
+html{
+  -webkit-text-size-adjust:100%;
+  text-size-adjust:100%;
+}
 
 body{
   margin:0;
+  min-height:100vh;
   min-height:100dvh;
   display:grid;
   place-items:center;
@@ -52,8 +57,7 @@ body{
   height:100%;
   z-index:0;
   pointer-events:none;
-  mix-blend-mode:screen;
-  opacity:.9;
+  opacity:.8;
 }
 
 .aurora{
@@ -61,8 +65,8 @@ body{
   inset:-25%;
   z-index:0;
   pointer-events:none;
-  filter:blur(80px);
-  opacity:.7;
+  filter:blur(42px);
+  opacity:.55;
 }
 .aurora span{
   position:absolute;
@@ -90,9 +94,9 @@ body{
 }
 
 /* =========================================================
-   DNA — hélice dupla 3D ao fundo (efeito espiral)
-   Canvas com projeção em perspectiva: profundidade,
-   desfoque e brilho variam conforme o eixo z.
+   DNA — HÉLICE DUPLA ÚNICA AO FUNDO
+   Projeção em perspectiva no canvas: profundidade (z),
+   tamanho e brilho variam ao longo da hélice.
    ========================================================= */
 .dna-canvas{
   position:fixed;
@@ -133,13 +137,17 @@ body{
   margin:0 0 clamp(1rem,3vh,1.9rem);
   display:flex;
   align-items:center;
-  gap:1rem;
-  font-size:clamp(.58rem,1.5vw,.72rem);
+  justify-content:center;
+  gap:clamp(.5rem,2vw,1rem);
+  width:100%;
+  font-size:clamp(.5rem,2.6vw,.72rem);
   font-weight:400;
-  letter-spacing:.44em;
+  letter-spacing:.32em;
   text-transform:uppercase;
   color:var(--neon);
   opacity:0;
+  white-space:nowrap;
+  text-align:center;
 }
 .eyebrow::before,
 .eyebrow::after{
@@ -173,8 +181,7 @@ body{
   z-index:1;
   filter:
     drop-shadow(0 0 6px rgba(150,255,200,.45))
-    drop-shadow(0 0 22px rgba(50,220,140,.30))
-    drop-shadow(0 0 60px rgba(30,180,110,.20));
+    drop-shadow(0 0 22px rgba(50,220,140,.30));
   animation:bob 9s ease-in-out calc(2.2s * var(--speed)) infinite;
 }
 .halo{
@@ -295,7 +302,7 @@ body{
   translate:-50% -50%;
   border-radius:50%;
   background:radial-gradient(circle, rgba(170,255,210,.34), rgba(60,220,150,.12) 42%, transparent 70%);
-  filter:blur(34px);
+  filter:blur(20px);
   opacity:0;
   pointer-events:none;
   z-index:0;
@@ -329,11 +336,14 @@ body{
     0 0 48px rgba(60,220,150,.38),
     0 0 110px rgba(30,170,110,.28);
 }
-.name .word{ display:inline-flex; }
+.name .word{
+  display:inline-flex;
+  flex-wrap:wrap;
+  max-width:100%;
+}
 .name .ltr{
   display:inline-block;
   opacity:0;
-  will-change:transform, filter, opacity;
 }
 .run .name .ltr{
   animation:neonIn calc(1s * var(--speed)) cubic-bezier(.18,.85,.25,1) calc(var(--t) * 1s * var(--speed)) both;
@@ -491,13 +501,49 @@ body{
    ========================================================= */
 @media (max-height: 660px){
   .stage{ padding:1.1rem 0 2.2rem; }
-  .eyebrow{ margin-bottom:.7rem; letter-spacing:.34em; }
+  .eyebrow{ margin-bottom:.7rem; letter-spacing:.28em; }
   .bloom-wrap{ width:clamp(80px, 18vh, 118px); margin-bottom:.1rem; }
   .name{ font-size:clamp(2.3rem, min(11.5vw, 12.5vh), 5.2rem); }
   .rule{ margin:.7rem 0 .9rem; }
   .message{ font-size:.88rem; line-height:1.62; min-height:4.9em; }
   .signature{ margin-top:1rem; }
   .hint{ display:none; }
+}
+@media (max-height: 480px){
+  .stage{ padding:.6rem 0 1rem; }
+  .eyebrow{ margin-bottom:.35rem; font-size:.4rem; letter-spacing:.2em; }
+  .bloom-wrap{ width:clamp(52px, 15vh, 82px); margin-bottom:0; }
+  .name{ font-size:clamp(1.6rem, min(9vw, 11vh), 3rem); }
+  .rule{ margin:.35rem 0 .45rem; }
+  .message{ font-size:.76rem; line-height:1.42; min-height:auto; }
+  .signature{ margin-top:.45rem; font-size:.72rem; }
+}
+@media (max-width: 380px){
+  .stage{ width:min(100% - 1.2rem, 62rem); }
+  .eyebrow{ font-size:.44rem; letter-spacing:.16em; gap:.35rem; }
+  .eyebrow::before,
+  .eyebrow::after{ width:10px; }
+  .message{ font-size:.86rem; line-height:1.65; }
+}
+
+/* =========================================================
+   CELULARES: luz e filtros reduzidos
+   ========================================================= */
+@media (max-width: 640px){
+  .aurora{ filter:blur(26px); opacity:.42; }
+  .bloom{
+    filter:
+      drop-shadow(0 0 6px rgba(150,255,200,.4))
+      drop-shadow(0 0 16px rgba(50,220,140,.25));
+  }
+  .flare{ filter:blur(16px); }
+  .halo{ filter:blur(6px); }
+  .name{
+    text-shadow:
+      0 0 5px rgba(210,255,232,.6),
+      0 0 16px rgba(120,255,186,.45),
+      0 0 40px rgba(60,220,150,.3);
+  }
 }
 
 /* =========================================================
@@ -530,6 +576,7 @@ body{
   .bloom .aura{ opacity:1; }
   .bloom .mote{ display:none; }
   #spores{ display:none; }
+  .aurora span{ animation:none; }
 }
 </style>
 </head>
@@ -623,10 +670,21 @@ const LETTER_DUR = 1.0;
   const cvs = document.getElementById("dnaCanvas");
   if (!cvs) return;
   const ctx = cvs.getContext("2d");
+  /* camada de fundo: a espiral é desfocada; texto e flor ficam nítidos */
+  const layerCvs = document.createElement("canvas");
+  const layerCtx = layerCvs.getContext("2d");
 
   const TAU = Math.PI * 2;
   const FOV = 1000;
   let W = 0, H = 0, DPR = 1;
+  /* qualidade adaptativa: reduz se o aparelho não acompanhar */
+  /* qualidade inicial conservadora em aparelhos fracos */
+  const lowPower = (window.matchMedia && window.matchMedia("(hover: none)").matches)
+    || (navigator.deviceMemory && navigator.deviceMemory <= 4)
+    || (navigator.hardwareConcurrency && navigator.hardwareConcurrency <= 4);
+  let quality = lowPower ? 1 : 2;
+  let N = lowPower ? 100 : 165;
+  let emaMs = 16, frameCount = 0, prevFrame = performance.now();
 
   /* "átomos" pré-renderizados para ganho de performance */
   function makeDot(inner, mid){
@@ -644,30 +702,55 @@ const LETTER_DUR = 1.0;
   const dotMint  = makeDot("rgba(240,255,244,.95)", "rgba(110,255,170,.75)");
   const dotGhost = makeDot("rgba(215,255,232,.80)", "rgba(80,230,150,.45)");
 
-  const canFilter = typeof ctx.filter === "string";
-
-  /* desktop: grandes, parcialmente fora da tela.
-     mobile: pequenas, presas nos cantos opostos (não se sobrepõem). */
-  const DESKTOP = [
-    { fx: .86, fy: -.04, lenF: 1.42, amp: 118, turns: 3.15, rot: -19, spin:  .30, master: .62, blur: 2.2, yph: 0   },
-    { fx: .07, fy: 1.04, lenF: 1.18, amp:  96, turns: 2.75, rot:  17, spin: -.24, master: .34, blur: 5.5, yph: 2.1 }
-  ];
-  const COMPACT = [
-    { fx: 1.04, fy: .085, lenF: .54, amp: 42, turns: 2.3, rot: -13, spin:  .28, master: .52, blur: 1.6, yph: 0   },
-    { fx: -.04, fy: .915, lenF: .50, amp: 36, turns: 2.1, rot:  13, spin: -.22, master: .30, blur: 4.5, yph: 2.1 }
-  ];
-  let helices = DESKTOP;
+  /* uma única hélice central em HD, inclinada na diagonal */
+  function makeHelix(){
+    const mobile = W < 640;
+    return {
+      fx: .5,
+      fy: .5,
+      lenF: 1.58,
+      amp: Math.max(mobile ? 92 : 210, W * (mobile ? .34 : .29)),
+      turns: mobile ? 4.1 : 5.2,
+      rot: mobile ? 14 : 23,
+      spin: .22,
+      master: .74,
+      yph: 0
+    };
+  }
+  let helices = [];
 
   function resize(){
-    DPR = Math.min(2, window.devicePixelRatio || 1);
+    const cap = quality === 2 ? 2 : quality === 1 ? 1.5 : 1;
+    DPR = Math.min(cap, window.devicePixelRatio || 1);
     W = window.innerWidth;
     H = window.innerHeight;
     cvs.width  = Math.floor(W * DPR);
     cvs.height = Math.floor(H * DPR);
+    layerCvs.width  = cvs.width;
+    layerCvs.height = cvs.height;
     ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
-    helices = W < 640 ? COMPACT : DESKTOP;
+    layerCtx.setTransform(DPR, 0, 0, DPR, 0, 0);
+    helices = [makeHelix()];
   }
-  window.addEventListener("resize", resize, { passive: true });
+  function degradeQuality(){
+    if (quality <= 0) return;
+    quality--;
+    N = quality === 1 ? 100 : 56;
+    emaMs = 16;
+    resize();                       // recria o canvas menor
+  }
+  /* resize com debounce: no mobile a barra de URL dispara resize a
+     cada scroll — ignoramos mudanças pequenas de altura */
+  let rw = window.innerWidth, rh = window.innerHeight, rTimer = 0;
+  window.addEventListener("resize", () => {
+    clearTimeout(rTimer);
+    rTimer = setTimeout(() => {
+      const w = window.innerWidth, h = window.innerHeight;
+      if (Math.abs(w - rw) < 2 && Math.abs(h - rh) < 120) return;
+      rw = w; rh = h;
+      resize();
+    }, 160);
+  }, { passive: true });
   resize();
 
   function project(h, s, strand){
@@ -688,14 +771,17 @@ const LETTER_DUR = 1.0;
   }
 
   function drawHelix(h, t){
+    const g = layerCtx;
+
     h.cx = h.fx * W;
     h.cy = h.fy * H + Math.sin(t * .16 + h.yph) * (H * .012 + 6);
     h.phase = t * h.spin;
 
-    if (canFilter) ctx.filter = h.blur > .4 ? "blur(" + h.blur + "px)" : "none";
-    ctx.globalCompositeOperation = "lighter";
+    g.globalCompositeOperation = "lighter";
+    g.lineCap = "butt";
+    g.lineJoin = "miter";
 
-    const N = 150;
+    const rungStep = quality === 0 ? 6 : quality === 1 ? 4 : 3;
     const A = [], B = [];
     for (let i = 0; i <= N; i++){
       const s = i / N;
@@ -703,26 +789,43 @@ const LETTER_DUR = 1.0;
       B.push(project(h, s, 1));
     }
 
-    /* pares de bases (degraus da escada) */
-    for (let i = 0; i <= N; i += 3){
+    /* travejamento triangular: rede digital entre as fitas */
+    for (let i = 0; i < N; i += rungStep){
+      const j = Math.min(i + rungStep, N);
+      const a = A[i], b = B[i], aj = A[j], bj = B[j];
+      const d = (a.d + b.d + aj.d + bj.d) / 4;
+      g.strokeStyle = "rgba(124,255,178," + ((.028 + .18 * d * d) * h.master).toFixed(3) + ")";
+      g.lineWidth = .28 + .68 * d;
+      g.beginPath();
+      g.moveTo(a.x, a.y);
+      g.lineTo(bj.x, bj.y);
+      g.stroke();
+      g.beginPath();
+      g.moveTo(b.x, b.y);
+      g.lineTo(aj.x, aj.y);
+      g.stroke();
+    }
+
+    /* pares de bases: traços finos, mais claros perto da câmera */
+    for (let i = 0; i <= N; i += rungStep){
       const a = A[i], b = B[i];
       const d = (a.d + b.d) / 2;
-      ctx.strokeStyle = "rgba(124,255,178," + ((.035 + .30 * d * d) * h.master).toFixed(3) + ")";
-      ctx.lineWidth = .5 + 2.1 * d;
-      ctx.beginPath();
-      ctx.moveTo(a.x, a.y);
-      ctx.lineTo(b.x, b.y);
-      ctx.stroke();
-      if (d > .45){
-        const r = 1.8 + 4.8 * d;
-        ctx.globalAlpha = (.20 + .62 * d) * h.master;
-        ctx.drawImage(dotGhost, a.x - r, a.y - r, r * 2, r * 2);
-        ctx.drawImage(dotGhost, b.x - r, b.y - r, r * 2, r * 2);
-        ctx.globalAlpha = 1;
+      g.strokeStyle = "rgba(124,255,178," + ((.04 + .38 * d * d) * h.master).toFixed(3) + ")";
+      g.lineWidth = .32 + 1.55 * d;
+      g.beginPath();
+      g.moveTo(a.x, a.y);
+      g.lineTo(b.x, b.y);
+      g.stroke();
+      if (d > .42){
+        const r = 1.6 + 4.6 * d;
+        g.globalAlpha = (.18 + .62 * d) * h.master;
+        g.drawImage(dotGhost, a.x - r, a.y - r, r * 2, r * 2);
+        g.drawImage(dotGhost, b.x - r, b.y - r, r * 2, r * 2);
+        g.globalAlpha = 1;
       }
     }
 
-    /* fitas da dupla hélice: halo largo + núcleo brilhante */
+    /* fitas da dupla hélice: halo largo + núcleo grosso + fio central fino */
     const cols = [[87, 240, 154], [214, 255, 230]];
     const strands = [A, B];
     for (let k = 0; k < 2; k++){
@@ -731,38 +834,77 @@ const LETTER_DUR = 1.0;
       for (let i = 0; i < N; i++){
         const p0 = pts[i], p1 = pts[i + 1];
         const d = (p0.d + p1.d) / 2;
-        const alpha = (.06 + .52 * Math.pow(d, 1.6)) * h.master;
-        const w = .7 + 2.5 * d;
-        ctx.strokeStyle = "rgba(" + c[0] + "," + c[1] + "," + c[2] + "," + (alpha * .30).toFixed(3) + ")";
-        ctx.lineWidth = w * 3.6;
-        ctx.beginPath();
-        ctx.moveTo(p0.x, p0.y);
-        ctx.lineTo(p1.x, p1.y);
-        ctx.stroke();
-        ctx.strokeStyle = "rgba(" + c[0] + "," + c[1] + "," + c[2] + "," + alpha.toFixed(3) + ")";
-        ctx.lineWidth = w;
-        ctx.beginPath();
-        ctx.moveTo(p0.x, p0.y);
-        ctx.lineTo(p1.x, p1.y);
-        ctx.stroke();
+        const alpha = (.05 + .60 * Math.pow(d, 1.55)) * h.master;
+        const w = .5 + 3.1 * d;
+        if (quality > 0){
+          g.strokeStyle = "rgba(" + c[0] + "," + c[1] + "," + c[2] + "," + (alpha * .30).toFixed(3) + ")";
+          g.lineWidth = w * 4.1;
+          g.beginPath();
+          g.moveTo(p0.x, p0.y);
+          g.lineTo(p1.x, p1.y);
+          g.stroke();
+        }
+        g.strokeStyle = "rgba(" + c[0] + "," + c[1] + "," + c[2] + "," + alpha.toFixed(3) + ")";
+        g.lineWidth = w;
+        g.beginPath();
+        g.moveTo(p0.x, p0.y);
+        g.lineTo(p1.x, p1.y);
+        g.stroke();
+        if (d > .58 && quality > 0){
+          g.strokeStyle = "rgba(238,255,245," + (alpha * .66).toFixed(3) + ")";
+          g.lineWidth = Math.max(.35, w * .24);
+          g.beginPath();
+          g.moveTo(p0.x, p0.y);
+          g.lineTo(p1.x, p1.y);
+          g.stroke();
+        }
       }
-      /* esferas de fosfato ao longo da fita */
-      for (let i = 0; i <= N; i += 5){
+      /* juntas facetadas das fitas, como segmentos de tubo */
+      const sectionStep = quality === 0 ? 10 : 7;
+      for (let i = sectionStep; i < N; i += sectionStep){
         const p = pts[i];
-        const r = 1.3 + 5.4 * p.d;
-        ctx.globalAlpha = (.16 + .72 * Math.pow(p.d, 1.5)) * h.master;
-        ctx.drawImage(k === 0 ? dotMint : dotGhost, p.x - r, p.y - r, r * 2, r * 2);
+        const prev = pts[Math.max(0, i - 1)], next = pts[Math.min(N, i + 1)];
+        let tx = next.x - prev.x, ty = next.y - prev.y;
+        const len = Math.hypot(tx, ty) || 1;
+        tx /= len; ty /= len;
+        const nx = -ty, ny = tx;
+        const half = (.5 + 3.1 * p.d) * 1.72;
+        g.strokeStyle = "rgba(210,255,232," + ((.10 + .44 * p.d) * h.master).toFixed(3) + ")";
+        g.lineWidth = .35 + .75 * p.d;
+        g.beginPath();
+        g.moveTo(p.x - nx * half, p.y - ny * half);
+        g.lineTo(p.x + nx * half, p.y + ny * half);
+        g.stroke();
       }
-      ctx.globalAlpha = 1;
+      /* esferas de fosfato e flares ao longo da fita */
+      for (let i = 0; i <= N; i += 4){
+        const p = pts[i];
+        const isFlare = i % 38 === 0;
+        const r = isFlare ? 6.4 + 6.2 * p.d : 1.1 + 5.5 * p.d;
+        g.globalAlpha = (isFlare ? .42 + .58 * Math.pow(p.d, 1.4) : .14 + .74 * Math.pow(p.d, 1.45)) * h.master;
+        g.drawImage(isFlare ? dotMint : (k === 0 ? dotMint : dotGhost), p.x - r, p.y - r, r * 2, r * 2);
+      }
+      g.globalAlpha = 1;
     }
 
-    ctx.globalCompositeOperation = "source-over";
-    if (canFilter) ctx.filter = "none";
+    g.globalCompositeOperation = "source-over";
   }
 
   function render(t){
-    ctx.clearRect(0, 0, W, H);
+    layerCtx.clearRect(0, 0, W, H);
     for (const h of helices) drawHelix(h, t);
+
+    ctx.clearRect(0, 0, W, H);
+
+    /* fundo desfocado: destaca somente texto e imagem da flor */
+    ctx.save();
+    ctx.setTransform(1, 0, 0, 1, 0, 0);          // pixels do dispositivo
+    const canFilter = typeof ctx.filter === "string";
+    const blur = quality === 2 ? 3.8 : quality === 1 ? 1.8 : 0;
+    if (canFilter && blur > 0) ctx.filter = "blur(" + blur + "px)";
+    ctx.globalAlpha = .96;
+    ctx.drawImage(layerCvs, 0, 0);
+    ctx.restore();
   }
 
   if (reduce){
@@ -772,7 +914,12 @@ const LETTER_DUR = 1.0;
   }
 
   const start = performance.now();
+  prevFrame = start;
   (function frame(now){
+    const dtMs = Math.min(now - prevFrame, 100);
+    prevFrame = now;
+    emaMs = emaMs * 0.94 + dtMs * 0.06;
+    if (++frameCount % 150 === 0 && emaMs > 26) degradeQuality();
     render((now - start) / 1000);
     requestAnimationFrame(frame);
   })(start);
@@ -1041,6 +1188,8 @@ document.addEventListener("keydown", (e) => {
 
   const ctx = cvs.getContext("2d");
   let W = 0, H = 0, DPR = 1;
+  let quality = 2;                 // 2 = cheio · 1 = médio · 0 = leve
+  let emaMs = 16, frameCount = 0, prevFrame = performance.now();
   const seeds = [];
   const sparks = [];
 
@@ -1057,7 +1206,8 @@ document.addEventListener("keydown", (e) => {
 
   function seedParticles(){
     seeds.length = 0;
-    const count = Math.min(72, Math.max(26, Math.round(W * H / 24000)));
+    const capN = quality === 2 ? 46 : quality === 1 ? 28 : 15;
+    const count = Math.min(capN, Math.max(16, Math.round(W * H / 36000)));
     for (let i = 0; i < count; i++){
       seeds.push({
         x: Math.random() * W,
@@ -1073,13 +1223,20 @@ document.addEventListener("keydown", (e) => {
   }
 
   function resize(){
-    DPR = Math.min(2, window.devicePixelRatio || 1);
+    const cap = quality === 2 ? 1.6 : quality === 1 ? 1.15 : 1;
+    DPR = Math.min(cap, window.devicePixelRatio || 1);
     W = window.innerWidth;
     H = window.innerHeight;
     cvs.width  = Math.floor(W * DPR);
     cvs.height = Math.floor(H * DPR);
     ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
     seedParticles();
+  }
+  function degradeQuality(){
+    if (quality <= 0) return;
+    quality--;
+    emaMs = 16;
+    resize();                       // recria o canvas menor e reduz partículas
   }
 
   window.sporeBurst = function(x, y, n){
@@ -1099,29 +1256,33 @@ document.addEventListener("keydown", (e) => {
     }
   };
 
-  let last = performance.now();
-
   function frame(now){
-    const dt = Math.min(3, (now - last) / 16.6667);
-    last = now;
+    const dtMs = Math.min(Math.max(now - prevFrame, 0), 100);
+    prevFrame = now;
+    emaMs = emaMs * 0.94 + dtMs * 0.06;
+    if (++frameCount % 150 === 0 && emaMs > 26) degradeQuality();
+
+    const dt = Math.min(3, dtMs / 16.6667);
 
     ctx.clearRect(0, 0, W, H);
     ctx.globalCompositeOperation = "lighter";
 
-    /* teia molecular bem sutil */
-    ctx.lineWidth = .6;
-    for (let i = 0; i < seeds.length; i++){
-      const p = seeds[i];
-      for (let j = i + 1; j < seeds.length; j++){
-        const q = seeds[j];
-        const dx = p.x - q.x, dy = p.y - q.y;
-        const d2 = dx * dx + dy * dy;
-        if (d2 < 15000){
-          ctx.strokeStyle = "rgba(124,255,178," + ((1 - d2 / 15000) * .12).toFixed(3) + ")";
-          ctx.beginPath();
-          ctx.moveTo(p.x, p.y);
-          ctx.lineTo(q.x, q.y);
-          ctx.stroke();
+    /* teia molecular bem sutil (desativada no modo leve) */
+    if (quality > 0){
+      ctx.lineWidth = .6;
+      for (let i = 0; i < seeds.length; i++){
+        const p = seeds[i];
+        for (let j = i + 1; j < seeds.length; j++){
+          const q = seeds[j];
+          const dx = p.x - q.x, dy = p.y - q.y;
+          const d2 = dx * dx + dy * dy;
+          if (d2 < 15000){
+            ctx.strokeStyle = "rgba(124,255,178," + ((1 - d2 / 15000) * .12).toFixed(3) + ")";
+            ctx.beginPath();
+            ctx.moveTo(p.x, p.y);
+            ctx.lineTo(q.x, q.y);
+            ctx.stroke();
+          }
         }
       }
     }
@@ -1157,7 +1318,16 @@ document.addEventListener("keydown", (e) => {
     requestAnimationFrame(frame);
   }
 
-  window.addEventListener("resize", resize);
+  let rw = window.innerWidth, rh = window.innerHeight, rTimer = 0;
+  window.addEventListener("resize", () => {
+    clearTimeout(rTimer);
+    rTimer = setTimeout(() => {
+      const w = window.innerWidth, h = window.innerHeight;
+      if (Math.abs(w - rw) < 2 && Math.abs(h - rh) < 120) return;
+      rw = w; rh = h;
+      resize();
+    }, 160);
+  }, { passive: true });
   resize();
 
   if (!reduce) requestAnimationFrame(frame);
