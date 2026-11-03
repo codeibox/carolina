@@ -702,14 +702,16 @@ const LETTER_DUR = 1.0;
   const dotMint  = makeDot("rgba(240,255,244,.95)", "rgba(110,255,170,.75)");
   const dotGhost = makeDot("rgba(215,255,232,.80)", "rgba(80,230,150,.45)");
 
-  /* uma única hélice central em HD, inclinada na diagonal */
+  /* uma única hélice central em HD, inclinada na diagonal
+     no desktop a largura é limitada para não ficar exagerada */
   function makeHelix(){
     const mobile = W < 640;
+    const desktopAmp = Math.min(340, Math.max(180, W * .22));
     return {
       fx: .5,
       fy: .5,
       lenF: 1.58,
-      amp: Math.max(mobile ? 92 : 210, W * (mobile ? .34 : .29)),
+      amp: mobile ? Math.max(86, W * .34) : desktopAmp,
       turns: mobile ? 4.1 : 5.2,
       rot: mobile ? 14 : 23,
       spin: .22,
